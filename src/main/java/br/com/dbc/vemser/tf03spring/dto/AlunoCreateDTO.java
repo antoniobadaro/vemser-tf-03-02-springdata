@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 public class AlunoCreateDTO {
 
     @NotNull(message = "O campo nome não pode ser nulo")

@@ -15,19 +15,19 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class ProfessorCreateDTO {
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Schema(description = "Nome do professor")
     private String nome;
 
-    @NotNull
+    @NotNull(message = "O campo cpf não pode ser nulo")
     @Schema(description = "CPF do professor")
     private String cpf;
 
-    @NotNull
+    @NotNull(message = "O campo especialidade não pode ser nulo")
     @Schema(description = "Especialidade do professor")
     private String especialidade;
 
-    @NotNull
+    @NotNull(message = "O campo salario não pode ser nulo")
     @Schema(description = "Salário do professor")
     private Double salario;
 

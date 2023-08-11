@@ -14,14 +14,16 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CursoCreateDTO {
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotBlank(message = "O campo nome não pode estar vazio ou apenas com espaços em branco")
     @Schema(description = "Nome do curso", required = true, example = "Arquitetura de computadores")
     private String nome;
-    @NotNull
+
+    @NotNull(message = "O campo cargaHoraria não pode ser nulo")
     @Schema(description = "Carga horária do curso", required = true, example = "60")
     private Integer cargaHoraria;
-    @NotNull
+
+    @NotNull(message = "O campo periodo não pode ser nulo")
     @Schema(description = "Período do curso", required = true, example = "MANHA")
     private TipoPeriodo periodo;
 
