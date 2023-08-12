@@ -1,11 +1,12 @@
 package br.com.dbc.vemser.tf03spring.service;
 
-import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
+import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
-import br.com.dbc.vemser.tf03spring.model.Aluno;
-import br.com.dbc.vemser.tf03spring.model.Endereco;
+import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
 import br.com.dbc.vemser.tf03spring.repository.EnderecoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,42 +16,56 @@ import java.util.List;
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public EnderecoService(EnderecoRepository enderecoRepository){
         this.enderecoRepository = enderecoRepository;
     }
 
-    public EnderecoDTO create(EnderecoDTO enderecoDTO) throws BancoDeDadosException {
-        Endereco enderecoCriado = enderecoRepository.save(enderecoDTO);
-
-        return new EnderecoDTO(enderecoCriado);
+    public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
+        EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
+        return retornarDTO(enderecoCriado);
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
-        List<Endereco> todosOsEnderecos = enderecoRepository.findAll();
+        List<EnderecoEntity> todosOsEnderecos = enderecoRepository.findAll();
         List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
-
-        for (Endereco endereco : todosOsEnderecos) {
-            enderecoDTOS.add(new EnderecoDTO(endereco));
+        for (EnderecoEntity endereco : todosOsEnderecos) {
+            enderecoDTOS.add(retornarDTO(endereco));
         }
-
         return enderecoDTOS;
     }
 
     public EnderecoDTO findById(Integer idEndereco) throws BancoDeDadosException {
-        Endereco enderecoEncontrado = enderecoRepository.findById(idEndereco);
-
-        return new EnderecoDTO(enderecoEncontrado);
+        EnderecoEntity enderecoEncontrado = enderecoRepository.findById(idEndereco).get();
+        return retornarDTO(enderecoEncontrado);
     }
 
     public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws BancoDeDadosException {
-        Endereco enderecoAtualizado = enderecoRepository.update(idEndereco, enderecoDTO);
+        EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco).get();
 
-        return new EnderecoDTO(enderecoAtualizado);
+        enderecoAtualizado.setLogradouro(enderecoDTO.getLogradouro());
+        enderecoAtualizado.setEstado(enderecoDTO.getEstado());
+        enderecoAtualizado.setComplemento(enderecoDTO.getComplemento());
+        enderecoAtualizado.setCidade(enderecoDTO.getCidade());
+        enderecoAtualizado.setCep(enderecoDTO.getCep());
+        enderecoAtualizado.setBairro(enderecoDTO.getBairro());
+        enderecoAtualizado.setNumero(enderecoDTO.getNumero());
+
+        return retornarDTO(enderecoAtualizado);
     }
 
     public void delete(Integer idEndereco) throws BancoDeDadosException {
-        enderecoRepository.delete(idEndereco);
+        enderecoRepository.deleteById(idEndereco);
+    }
+
+    public EnderecoEntity retornarEntidade(EnderecoCreateDTO enderecoCreateDTO){
+        return objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
+    }
+
+    public EnderecoDTO retornarDTO(EnderecoEntity enderecoEntity){
+        return objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
     }
 
 }
