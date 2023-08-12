@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Professor {
+public class ProfessorEntity {
 
     private Integer idProfessor;
     private String nome;

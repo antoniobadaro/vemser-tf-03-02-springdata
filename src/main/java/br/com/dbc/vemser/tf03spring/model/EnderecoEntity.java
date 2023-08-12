@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-public class Endereco {
+public class EnderecoEntity {
     private Integer idEndereco;
     private String cep;
     private String cidade;

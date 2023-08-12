@@ -1,47 +1,70 @@
 package br.com.dbc.vemser.tf03spring.service;
 
 
-import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
-import br.com.dbc.vemser.tf03spring.model.Professor;
+import br.com.dbc.vemser.tf03spring.dto.*;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.ProfessorRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+@Data
 public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
+    private final ObjectMapper objectMapper;
 
-
-    public ProfessorService(ProfessorRepository professorRepository){
-        this.professorRepository = professorRepository;
-    }
-
-    public ProfessorDTO create(ProfessorDTO professorDTO) {
-        Professor professorCriado = professorRepository.create(professorDTO);
-        return new ProfessorDTO(professorCriado);
+    public ProfessorDTO create(ProfessorCreateDTO professorDTO) {
+        ProfessorEntity professorCriado = retornarEntity(professorDTO);
+        return retornarDTO(professorCriado);
     }
 
     public List<ProfessorDTO> findAll() {
-        List<Professor> todosOsProfessores = professorRepository.findAll();
-        List<ProfessorDTO> professorDTOS = new ArrayList<>();
+        List<ProfessorEntity> listProfessores = professorRepository.findAll();
+        List<ProfessorDTO> professoresDTO = new ArrayList<>();
 
-        for (Professor professor : todosOsProfessores) {
-            professorDTOS.add(new ProfessorDTO(professor));
+        for (ProfessorEntity professorEntity : listProfessores) {
+            professoresDTO.add(retornarDTO(professorEntity));
         }
-
-        return professorDTOS;
+        return professoresDTO;
     }
 
-    public ProfessorDTO update(Integer idProfessor, ProfessorDTO professorDTO) {
-        Professor professorAtualizado = professorRepository.update(idProfessor, professorDTO);
-
-        return new ProfessorDTO(professorAtualizado);
+    public ProfessorDTO findById(Integer idProfessor) throws RegraDeNegocioException {
+        ProfessorEntity professorEncontrado = professorRepository.findById(idProfessor)
+                .orElseThrow(() -> new RegraDeNegocioException("Professor não encontrado"));
+        return retornarDTO(professorEncontrado);
     }
 
-    public void delete(Integer idProfessor) {
-        professorRepository.delete(idProfessor);
+    public ProfessorDTO update(Integer idProfessor, ProfessorCreateDTO professorDTO) throws RegraDeNegocioException {
+        ProfessorEntity professorAtualizar = professorRepository.findById(idProfessor)
+                .orElseThrow(() -> new RegraDeNegocioException("Professor não encontrado"));
+        professorAtualizar.setCpf(professorDTO.getCpf());
+        professorAtualizar.setNome(professorDTO.getNome());
+        professorAtualizar.setSalario(professorDTO.getSalario());
+        professorAtualizar.setEspecialidade(professorDTO.getEspecialidade());
+
+        ProfessorEntity professorAtualizado = professorRepository.save(professorAtualizar);
+        return retornarDTO(professorAtualizado);
+
+    }
+
+    public void delete(Integer idProfessor) throws RegraDeNegocioException{
+        professorRepository.findById(idProfessor)
+                .orElseThrow(() -> new RegraDeNegocioException("Professor não encontrado"));
+        professorRepository.deleteById(idProfessor);
+    }
+    public ProfessorEntity retornarEntity(ProfessorCreateDTO professorDTO){
+        return objectMapper.convertValue(professorDTO, ProfessorEntity.class);
+    }
+
+    public ProfessorDTO retornarDTO(ProfessorEntity professorEntity){
+        return objectMapper.convertValue(professorEntity, ProfessorDTO.class);
     }
 }

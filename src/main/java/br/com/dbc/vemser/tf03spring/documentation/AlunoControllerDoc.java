@@ -32,7 +32,7 @@ public interface AlunoControllerDoc {
             }
     )
     @PostMapping()
-    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws BancoDeDadosException, TemplateException, MessagingException, IOException;
+    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Lista todos os alunos", description = "Lista todos os alunos do banco de dados.")
     @ApiResponses(
@@ -43,7 +43,7 @@ public interface AlunoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<AlunoDTO>> findAll()throws BancoDeDadosException ;
+    ResponseEntity<List<AlunoDTO>> findAll() throws RegraDeNegocioException;
 
 
     @Operation(summary = "Lista um aluno", description = "Lista um aluno específico do banco de dados." +
@@ -56,7 +56,7 @@ public interface AlunoControllerDoc {
             }
     )
     @GetMapping("/{idAluno}")
-    ResponseEntity<AlunoDTO> findById(@PathVariable("idAluno") @Positive Integer idAluno) throws BancoDeDadosException, RegraDeNegocioException;
+    ResponseEntity<AlunoDTO> findById(@PathVariable("idAluno") @Positive Integer idAluno) throws RegraDeNegocioException;
 
     @Operation(summary = "Atualiza um aluno", description = "Atualiza um aluno e o persiste no banco de dados." +
             " Para isso, o ID do recurso a ser atualizado deverá ser informado na URL da requisição, e as" +
@@ -70,7 +70,7 @@ public interface AlunoControllerDoc {
             }
     )
     @PutMapping("/{idAluno}")
-    ResponseEntity<AlunoDTO> update(@PathVariable("idAluno") @Positive Integer idAluno, @RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException, TemplateException, MessagingException, IOException;
+    ResponseEntity<AlunoDTO> update(@PathVariable("idAluno") @Positive Integer idAluno, @RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Deleta um aluno", description = "Deleta um aluno do banco de dados" +
             " Para isso, o ID do recurso a ser deletado deverá ser informado na URL da requisição" +
@@ -83,6 +83,6 @@ public interface AlunoControllerDoc {
             }
     )
     @DeleteMapping("/{idAluno}")
-    ResponseEntity<Void> delete(@PathVariable("idAluno") @Positive Integer idAluno) throws BancoDeDadosException, RegraDeNegocioException, TemplateException, MessagingException, IOException;
+    ResponseEntity<Void> delete(@PathVariable("idAluno") @Positive Integer idAluno) throws RegraDeNegocioException;
 
 }
