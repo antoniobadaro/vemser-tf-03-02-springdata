@@ -21,7 +21,7 @@ public class EnderecoService {
     }
 
     public EnderecoDTO create(EnderecoDTO enderecoDTO) throws BancoDeDadosException {
-        Endereco enderecoCriado = enderecoRepository.create(enderecoDTO);
+        Endereco enderecoCriado = enderecoRepository.save(enderecoDTO);
 
         return new EnderecoDTO(enderecoCriado);
     }
