@@ -5,12 +5,16 @@ import br.com.dbc.vemser.tf03spring.documentation.EnderecoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
 import br.com.dbc.vemser.tf03spring.service.EnderecoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -23,21 +27,22 @@ import java.util.List;
 public class EnderecoController implements EnderecoControllerDoc {
 
     private final EnderecoService enderecoService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    public EnderecoController(EnderecoService enderecoService){
+    public EnderecoController(EnderecoService enderecoService) {
         this.enderecoService = enderecoService;
     }
 
     @PostMapping
     public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoDTO enderecoParaCriar = new EnderecoDTO(enderecoCreateDTO);
-        EnderecoDTO enderecoCriado = enderecoService.create(enderecoParaCriar);
+        EnderecoEntity enderecoCriado = retornarEntidade(enderecoService.create(enderecoCreateDTO));
 
         if (ObjectUtils.isEmpty(enderecoCriado)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        return new ResponseEntity<>(enderecoCriado, HttpStatus.CREATED);
+        return new ResponseEntity<>(retornarDTO(enderecoCriado), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -64,7 +69,7 @@ public class EnderecoController implements EnderecoControllerDoc {
 
     @PutMapping("/{idEndereco}")
     public ResponseEntity<EnderecoDTO> update(@PathVariable("idEndereco") @Positive Integer idEndereco, @RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoDTO enderecoParaAtualizar = new EnderecoDTO(enderecoCreateDTO);
+        EnderecoDTO enderecoParaAtualizar = new EnderecoDTO();
         EnderecoDTO enderecoAtualizado = enderecoService.update(idEndereco, enderecoParaAtualizar);
 
         if (ObjectUtils.isEmpty(enderecoAtualizado)) {
@@ -86,4 +91,14 @@ public class EnderecoController implements EnderecoControllerDoc {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    public EnderecoEntity retornarEntidade(EnderecoCreateDTO enderecoCreateDTO) {
+        return objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
+    }
+
+    public EnderecoDTO retornarDTO(EnderecoEntity enderecoEntity) {
+        return objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
+    }
 }
+
+

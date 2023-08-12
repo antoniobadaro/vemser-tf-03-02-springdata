@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.tf03spring.dto;
 
-import br.com.dbc.vemser.tf03spring.model.Endereco;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
