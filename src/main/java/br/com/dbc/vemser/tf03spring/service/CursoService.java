@@ -1,9 +1,10 @@
 package br.com.dbc.vemser.tf03spring.service;
+
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
-import br.com.dbc.vemser.tf03spring.model.Curso;
+import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -19,48 +20,53 @@ import java.util.stream.Collectors;
 public class CursoService{
 
     private final CursoRepository cursoRepository;
-    private final ProfessorService professorService;
     private final ObjectMapper objectMapper;
 
 
 
-    public List<CursoDTO> listar() throws BancoDeDadosException {
-        List<Curso> listaCurso = cursoRepository.listar();
 
-        return listaCurso.stream()
-                .map(curso -> objectMapper.convertValue(curso, CursoDTO.class))
+    public List<CursoDTO> findAll() throws BancoDeDadosException {
+        return cursoRepository.findAll().stream()
+                .map(this::returnDTO)
                 .collect(Collectors.toList());
-
     }
 
 
-    public CursoDTO adicionar(CursoCreateDTO curso) throws Exception{
-        Curso curso1 = objectMapper.convertValue(curso, Curso.class);
-        return objectMapper.convertValue(cursoRepository.adicionar(curso1), CursoDTO.class);
-
+    public CursoDTO create(CursoCreateDTO curso) throws Exception{
+        CursoEntity cursoEntity = returnEntity(curso);
+        return returnDTO(cursoRepository.save(cursoEntity));
     }
 
-    public CursoDTO editar(CursoCreateDTO curso, Integer idCurso) throws Exception {
+    public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {
 
-        getCurso(idCurso);
-        Curso curso1 = objectMapper.convertValue(curso, Curso.class);
-        //curso1. setIdCurso(cursoRecuperado.getIdCurso());
-        return objectMapper.convertValue(cursoRepository.editar(curso1, idCurso), CursoDTO.class);
-    }
+        CursoDTO cursoAtualizado = findById(idCurso);
 
-
-    public void remover(Integer idCurso) throws Exception{
-        getCurso(idCurso);
-        cursoRepository.remover(idCurso);
+        cursoAtualizado.setNome(curso.getNome());
+        cursoAtualizado.setPeriodo(curso.getPeriodo());
+        cursoAtualizado.setCargaHoraria(curso.getCargaHoraria());
+        return cursoAtualizado;
     }
 
 
-    private Curso getCurso(Integer idCurso) throws Exception{
-        Curso pessoaRecuperada = cursoRepository.listar().stream()
-                .filter(curso -> curso.getIdCurso().equals(idCurso))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Curso não encontrado!"));
-        return pessoaRecuperada;
+    public void delete(Integer idCurso) throws Exception{
+        findById(idCurso);
+        cursoRepository.deleteById(idCurso);
+    }
+
+
+
+    public CursoDTO findById(Integer idCurso) throws RegraDeNegocioException {
+        CursoEntity cursoEntity = cursoRepository.findById(idCurso)
+                .orElseThrow(() -> new RegraDeNegocioException("Curso não encontrado"));
+        return returnDTO(cursoEntity);
+    }
+
+    public CursoEntity returnEntity(CursoCreateDTO curso){
+        return objectMapper.convertValue(curso, CursoEntity.class);
+    }
+
+    public CursoDTO returnDTO(CursoEntity curso){
+        return objectMapper.convertValue(curso, CursoDTO.class);
     }
 
 }

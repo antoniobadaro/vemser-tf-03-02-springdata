@@ -4,6 +4,7 @@ import br.com.dbc.vemser.tf03spring.documentation.CursoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.CursoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +25,28 @@ public class CursoController implements CursoControllerDoc {
     }
 
     @GetMapping
-    public List<CursoDTO> listar() throws BancoDeDadosException {
-        return cursoService.listar();
+    public List<CursoDTO> findAll() throws BancoDeDadosException {
+        return cursoService.findAll();
+    }
+
+    @GetMapping("/{idCurso}")
+    public CursoDTO findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
+        return cursoService.findById(idCurso);
     }
 
     @PostMapping
-    public ResponseEntity<CursoDTO> adicionar(@Valid @RequestBody CursoCreateDTO curso) throws Exception{
-        return new ResponseEntity<>(cursoService.adicionar(curso), HttpStatus.OK);
+    public ResponseEntity<CursoDTO> create(@Valid @RequestBody CursoCreateDTO curso) throws Exception{
+        return new ResponseEntity<>(cursoService.create(curso), HttpStatus.OK);
     }
 
     @PutMapping("/{idCurso}")
-    public ResponseEntity<CursoDTO> editar(@Valid @RequestBody CursoCreateDTO curso, @PathVariable ("idCurso") Integer idCurso) throws Exception{
-        return new ResponseEntity<>(cursoService.editar(curso, idCurso), HttpStatus.OK);
+    public ResponseEntity<CursoDTO> update(@Valid @RequestBody CursoCreateDTO curso, @PathVariable ("idCurso") Integer idCurso) throws Exception{
+        return new ResponseEntity<>(cursoService.update(curso, idCurso), HttpStatus.OK);
     }
 
     @DeleteMapping("/{idCurso}")
-    public ResponseEntity<Void> remover (@PathVariable("idCurso") Integer idCurso) throws Exception{
-        cursoService.remover(idCurso);
+    public ResponseEntity<Void> delete(@PathVariable("idCurso") Integer idCurso) throws Exception{
+        cursoService.delete(idCurso);
         return ResponseEntity.ok().build();
     }
 }
