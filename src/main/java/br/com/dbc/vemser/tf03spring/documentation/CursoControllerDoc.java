@@ -3,6 +3,7 @@ package br.com.dbc.vemser.tf03spring.documentation;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,7 +25,18 @@ public interface CursoControllerDoc {
             }
     )
     @GetMapping
-    List<CursoDTO> listar() throws BancoDeDadosException;
+    List<CursoDTO> findAll() throws BancoDeDadosException;
+
+    @Operation(summary = "Lista um curso pelo sei id", description = "Lista um curso específico no banco de dados.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Lista um curso pelo id"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/{idCurso}")
+    CursoDTO findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException;
 
 
     @Operation(summary = "Cria um curso", description = "Cria um curso a partir de um body JSON ")
@@ -36,7 +48,7 @@ public interface CursoControllerDoc {
             }
     )
     @PostMapping
-    ResponseEntity<CursoDTO> adicionar(@Valid @RequestBody CursoCreateDTO curso) throws Exception;
+    ResponseEntity<CursoDTO> create(@Valid @RequestBody CursoCreateDTO curso) throws Exception;
 
 
     @Operation(summary = "Atualiza um curso", description = "Atualiza um curso a partir do idCurso")
@@ -48,7 +60,7 @@ public interface CursoControllerDoc {
             }
     )
     @PutMapping("/{idCurso}")
-    ResponseEntity<CursoDTO> editar(@Valid @RequestBody CursoCreateDTO curso, @PathVariable("idCurso") Integer idCurso) throws Exception;
+    ResponseEntity<CursoDTO> update(@Valid @RequestBody CursoCreateDTO curso, @PathVariable("idCurso") Integer idCurso) throws Exception;
 
 
     @Operation(summary = "Exclui um curso", description = "Exclui um curso do banco de dados")
@@ -60,5 +72,5 @@ public interface CursoControllerDoc {
             }
     )
     @DeleteMapping("/{idCurso}")
-    ResponseEntity<Void> remover (@PathVariable("idCurso") Integer idCurso) throws Exception;
+    ResponseEntity<Void> delete (@PathVariable("idCurso") Integer idCurso) throws Exception;
 }
