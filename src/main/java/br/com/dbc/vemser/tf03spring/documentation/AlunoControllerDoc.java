@@ -32,7 +32,7 @@ public interface AlunoControllerDoc {
             }
     )
     @PostMapping()
-    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException;
+    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Lista todos os alunos", description = "Lista todos os alunos do banco de dados.")
     @ApiResponses(
@@ -70,7 +70,8 @@ public interface AlunoControllerDoc {
             }
     )
     @PutMapping("/{idAluno}")
-    ResponseEntity<AlunoDTO> update(@PathVariable("idAluno") @Positive Integer idAluno, @RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException;
+    public ResponseEntity<AlunoDTO> update(@PathVariable("idAluno") @Positive Integer idAluno,
+                                           @RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Deleta um aluno", description = "Deleta um aluno do banco de dados" +
             " Para isso, o ID do recurso a ser deletado deverá ser informado na URL da requisição" +
@@ -83,6 +84,6 @@ public interface AlunoControllerDoc {
             }
     )
     @DeleteMapping("/{idAluno}")
-    ResponseEntity<Void> delete(@PathVariable("idAluno") @Positive Integer idAluno) throws RegraDeNegocioException;
+    public ResponseEntity<Void> delete(@PathVariable("idAluno") @Positive(message = "O ID deve ser um número inteiro positivo") Integer idAluno) throws RegraDeNegocioException;
 
 }

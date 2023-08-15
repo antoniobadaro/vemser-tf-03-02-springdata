@@ -29,4 +29,7 @@ public class AlunoCreateDTO {
     @Size(max = 10)
     private String numeroDeMatricula;
 
+    @Schema(description = "Insira o email do aluno", required = true, example = "teste@gmail.com")
+    private String email;
+
 }
