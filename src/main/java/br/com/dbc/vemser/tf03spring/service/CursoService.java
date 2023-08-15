@@ -25,7 +25,7 @@ public class CursoService{
 
 
 
-    public List<CursoDTO> findAll() throws BancoDeDadosException {
+    public List<CursoDTO> findAll() {
         return cursoRepository.findAll().stream()
                 .map(this::returnDTO)
                 .collect(Collectors.toList());

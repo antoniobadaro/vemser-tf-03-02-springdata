@@ -16,16 +16,16 @@ public class CursoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CURSO_SEQ")
     @SequenceGenerator(name = "CURSO_SEQ", sequenceName = "SEQ_CURSO", allocationSize = 1)
-    @Column(name = "id_curso")
+    @Column(name = "IDCURSO")
     private Integer idCurso;
 
-    @Column(name = "nome")
+    @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "carga_horaria")
+    @Column(name = "CARGAHORARIA")
     private Integer cargaHoraria;
 
-    @Column(name = "periodo")
+    @Column(name = "PERIODO")
     private TipoPeriodo periodo;
 }
 
