@@ -39,12 +39,13 @@ public class CursoService{
 
     public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {
 
-        CursoDTO cursoAtualizado = findById(idCurso);
+        CursoEntity cursoAtualizado = returnEntity(findById(idCurso));
 
         cursoAtualizado.setNome(curso.getNome());
         cursoAtualizado.setPeriodo(curso.getPeriodo());
         cursoAtualizado.setCargaHoraria(curso.getCargaHoraria());
-        return cursoAtualizado;
+        cursoRepository.save(cursoAtualizado);
+        return  returnDTO(cursoAtualizado);
     }
 
 
