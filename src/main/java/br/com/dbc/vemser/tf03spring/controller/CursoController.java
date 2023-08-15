@@ -25,7 +25,7 @@ public class CursoController implements CursoControllerDoc {
     }
 
     @GetMapping
-    public List<CursoDTO> findAll() throws BancoDeDadosException {
+    public List<CursoDTO> findAll() {
         return cursoService.findAll();
     }
 
