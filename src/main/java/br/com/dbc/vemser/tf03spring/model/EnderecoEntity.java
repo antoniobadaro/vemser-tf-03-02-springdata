@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.tf03spring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,5 +42,10 @@ public class EnderecoEntity {
 
     @Column(name = "estado")
     private String estado;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_aluno")
+    private AlunoEntity aluno;
 
 }
