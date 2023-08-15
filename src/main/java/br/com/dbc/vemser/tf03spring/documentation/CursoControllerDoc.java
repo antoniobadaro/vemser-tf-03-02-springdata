@@ -24,7 +24,8 @@ public interface CursoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<CursoDTO>> findAll() throws BancoDeDadosException;
+    public ResponseEntity<List<CursoDTO>> findAll();
+
 
     @Operation(summary = "Lista um curso pelo sei id", description = "Lista um curso específico no banco de dados.")
     @ApiResponses(

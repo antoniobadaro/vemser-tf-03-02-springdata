@@ -1,8 +1,6 @@
 package br.com.dbc.vemser.tf03spring.service;
 
-import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
-import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
-import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.dto.*;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,18 +20,15 @@ public class CursoService{
     private final CursoRepository cursoRepository;
     private final ObjectMapper objectMapper;
 
-
-
-
     public List<CursoDTO> findAll() {
-        List<CursoEntity> cursosEncontrados = cursoRepository.findAll();
-        List<CursoDTO> cursos = new ArrayList<>();
+        List<CursoEntity> listCursos = cursoRepository.findAll();
+        List<CursoDTO> cursoDTO = new ArrayList<>();
 
-        cursosEncontrados.forEach(cursoEntity -> cursos.add(returnDTO(cursoEntity)));
-
-        return cursos;
+        for (CursoEntity cursoEntity : listCursos) {
+            cursoDTO.add(returnDTO(cursoEntity));
+        }
+        return cursoDTO;
     }
-
 
     public CursoDTO create(CursoCreateDTO curso) throws Exception{
         CursoEntity cursoEntity = returnEntity(curso);
@@ -57,7 +51,6 @@ public class CursoService{
         findById(idCurso);
         cursoRepository.deleteById(idCurso);
     }
-
 
 
     public CursoDTO findById(Integer idCurso) throws RegraDeNegocioException {
