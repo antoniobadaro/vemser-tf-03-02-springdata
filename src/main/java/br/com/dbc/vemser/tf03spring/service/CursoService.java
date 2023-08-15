@@ -25,7 +25,7 @@ public class CursoService{
 
 
 
-    public List<CursoDTO> findAll() throws BancoDeDadosException {
+    public List<CursoDTO> findAll() {
         return cursoRepository.findAll().stream()
                 .map(this::returnDTO)
                 .collect(Collectors.toList());
@@ -39,7 +39,9 @@ public class CursoService{
 
     public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {
 
-        CursoEntity cursoAtualizado = cursoRepository.findById(idCurso).get();
+
+        CursoEntity cursoAtualizado = returnEntity(findById(idCurso));
+
 
         cursoAtualizado.setNome(curso.getNome());
         cursoAtualizado.setPeriodo(curso.getPeriodo());
