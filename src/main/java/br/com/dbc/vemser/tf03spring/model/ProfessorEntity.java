@@ -7,10 +7,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-@Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity(name = "PROFESSOR")
 public class ProfessorEntity {
 

@@ -1,14 +1,16 @@
 package br.com.dbc.vemser.tf03spring.model;
 
-import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 @Entity(name = "ALUNO")
 public class AlunoEntity {
 
@@ -32,4 +34,16 @@ public class AlunoEntity {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Aluno_x_Aluno_Curso",
+            joinColumns = @JoinColumn(name = "id_aluno"),
+            inverseJoinColumns = @JoinColumn(name = "idcurso"))
+    private Set<CursoEntity> cursos;
+
+    @OneToOne
+    @JoinColumn(name = "id_aluno")
+    private EnderecoEntity endereco;
+
 }

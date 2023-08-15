@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 @Entity(name = "ENDERECO")
 public class EnderecoEntity {
 
@@ -40,4 +40,8 @@ public class EnderecoEntity {
 
     @Column(name = "estado")
     private String estado;
+
+    @OneToOne(mappedBy = "endereco")
+    private AlunoEntity aluno;
+
 }

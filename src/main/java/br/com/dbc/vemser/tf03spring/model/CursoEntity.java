@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity(name = "CURSO")
 public class CursoEntity {
@@ -27,5 +29,8 @@ public class CursoEntity {
 
     @Column(name = "PERIODO")
     private TipoPeriodo periodo;
-}
 
+    @OneToOne
+    private Set<AlunoEntity> aluno;
+
+}
