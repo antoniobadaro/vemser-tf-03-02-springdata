@@ -4,7 +4,6 @@ import br.com.dbc.vemser.tf03spring.model.enums.TipoPeriodo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @AllArgsConstructor

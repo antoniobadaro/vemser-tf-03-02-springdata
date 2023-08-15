@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.tf03spring.service;
-
-import br.com.dbc.vemser.tf03spring.dto.*;
+import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
+import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,9 @@ public class CursoService{
 
     public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {
 
+
         CursoEntity cursoAtualizado = returnEntity(findById(idCurso));
+
 
         cursoAtualizado.setNome(curso.getNome());
         cursoAtualizado.setPeriodo(curso.getPeriodo());

@@ -10,7 +10,6 @@ import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.ArrayList;

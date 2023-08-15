@@ -1,7 +1,8 @@
 package br.com.dbc.vemser.tf03spring.service;
 
 
-import br.com.dbc.vemser.tf03spring.dto.*;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorCreateDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.ProfessorRepository;
@@ -9,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
