@@ -3,7 +3,9 @@ package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.EnderecoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,8 @@ public class EnderecoService {
 
     public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
         EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
-        return retornarDTO(enderecoCriado);
+        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
+        return retornarDTO(enderecoEnviar);
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
@@ -41,18 +44,22 @@ public class EnderecoService {
         return retornarDTO(enderecoEncontrado);
     }
 
-    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco).get();
 
-        enderecoAtualizado.setLogradouro(enderecoCreateDTO.getLogradouro());
-        enderecoAtualizado.setEstado(enderecoCreateDTO.getEstado());
-        enderecoAtualizado.setComplemento(enderecoCreateDTO.getComplemento());
-        enderecoAtualizado.setCidade(enderecoCreateDTO.getCidade());
-        enderecoAtualizado.setCep(enderecoCreateDTO.getCep());
-        enderecoAtualizado.setBairro(enderecoCreateDTO.getBairro());
-        enderecoAtualizado.setNumero(enderecoCreateDTO.getNumero());
+    public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws RegraDeNegocioException {
+        EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco)
+                .orElseThrow(() -> new RegraDeNegocioException("Endereco não encontrado"));
 
-        return retornarDTO(enderecoAtualizado);
+
+        enderecoAtualizado.setLogradouro(enderecoDTO.getLogradouro());
+        enderecoAtualizado.setEstado(enderecoDTO.getEstado());
+        enderecoAtualizado.setComplemento(enderecoDTO.getComplemento());
+        enderecoAtualizado.setCidade(enderecoDTO.getCidade());
+        enderecoAtualizado.setCep(enderecoDTO.getCep());
+        enderecoAtualizado.setBairro(enderecoDTO.getBairro());
+        enderecoAtualizado.setNumero(enderecoDTO.getNumero());
+
+        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoAtualizado);
+        return retornarDTO(enderecoEnviar);
     }
 
     public void delete(Integer idEndereco) throws BancoDeDadosException {

@@ -4,7 +4,9 @@ package br.com.dbc.vemser.tf03spring.controller;
 import br.com.dbc.vemser.tf03spring.documentation.EnderecoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
 import br.com.dbc.vemser.tf03spring.service.EnderecoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,15 +70,9 @@ public class EnderecoController implements EnderecoControllerDoc {
     }
 
     @PutMapping("/{idEndereco}")
-    public ResponseEntity<EnderecoDTO> update(@PathVariable("idEndereco") @Positive Integer idEndereco, @RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoDTO enderecoParaAtualizar = new EnderecoDTO();
-        EnderecoDTO enderecoAtualizado = enderecoService.update(idEndereco, enderecoParaAtualizar);
-
-        if (ObjectUtils.isEmpty(enderecoAtualizado)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        return new ResponseEntity<>(enderecoAtualizado, HttpStatus.OK);
+    public ResponseEntity<EnderecoDTO> update(@PathVariable("idEndereco") @Positive Integer idEndereco, @RequestBody @Valid EnderecoDTO enderecoDTO) throws RegraDeNegocioException {
+        EnderecoDTO enderecoAtualizar = enderecoService.update(idEndereco, enderecoDTO);
+        return new ResponseEntity<>(enderecoAtualizar, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idEndereco}")

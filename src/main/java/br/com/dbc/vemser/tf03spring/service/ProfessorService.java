@@ -24,7 +24,8 @@ public class ProfessorService {
 
     public ProfessorDTO create(ProfessorCreateDTO professorDTO) {
         ProfessorEntity professorCriado = retornarEntity(professorDTO);
-        return retornarDTO(professorCriado);
+        ProfessorEntity professorEnviar = professorRepository.save(professorCriado);
+        return retornarDTO(professorEnviar);
     }
 
     public List<ProfessorDTO> findAll() {
