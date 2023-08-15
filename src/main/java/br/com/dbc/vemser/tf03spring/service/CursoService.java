@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.tf03spring.service;
 
+
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
-import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
