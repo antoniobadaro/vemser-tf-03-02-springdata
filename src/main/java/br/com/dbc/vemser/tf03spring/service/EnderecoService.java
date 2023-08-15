@@ -41,16 +41,16 @@ public class EnderecoService {
         return retornarDTO(enderecoEncontrado);
     }
 
-    public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws BancoDeDadosException {
+    public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
         EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco).get();
 
-        enderecoAtualizado.setLogradouro(enderecoDTO.getLogradouro());
-        enderecoAtualizado.setEstado(enderecoDTO.getEstado());
-        enderecoAtualizado.setComplemento(enderecoDTO.getComplemento());
-        enderecoAtualizado.setCidade(enderecoDTO.getCidade());
-        enderecoAtualizado.setCep(enderecoDTO.getCep());
-        enderecoAtualizado.setBairro(enderecoDTO.getBairro());
-        enderecoAtualizado.setNumero(enderecoDTO.getNumero());
+        enderecoAtualizado.setLogradouro(enderecoCreateDTO.getLogradouro());
+        enderecoAtualizado.setEstado(enderecoCreateDTO.getEstado());
+        enderecoAtualizado.setComplemento(enderecoCreateDTO.getComplemento());
+        enderecoAtualizado.setCidade(enderecoCreateDTO.getCidade());
+        enderecoAtualizado.setCep(enderecoCreateDTO.getCep());
+        enderecoAtualizado.setBairro(enderecoCreateDTO.getBairro());
+        enderecoAtualizado.setNumero(enderecoCreateDTO.getNumero());
 
         return retornarDTO(enderecoAtualizado);
     }
