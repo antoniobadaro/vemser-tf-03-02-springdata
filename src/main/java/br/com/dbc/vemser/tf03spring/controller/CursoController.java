@@ -3,9 +3,11 @@ package br.com.dbc.vemser.tf03spring.controller;
 import br.com.dbc.vemser.tf03spring.documentation.CursoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.CursoService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,19 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
 @Validated
+@RestController
+@AllArgsConstructor
 @RequestMapping("/curso")
 public class CursoController implements CursoControllerDoc {
     private final CursoService cursoService;
-
-    public CursoController(CursoService cursoService) {
-        this.cursoService = cursoService;
-    }
-
     @GetMapping
-    public List<CursoDTO> findAll() {
-        return cursoService.findAll();
+    public ResponseEntity<List<CursoDTO>> findAll() {
+        return new ResponseEntity<>(cursoService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{idCurso}")
