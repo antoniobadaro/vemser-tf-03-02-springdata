@@ -29,4 +29,7 @@ public class AlunoEntity {
 
     @Column(name = "numero")
     private String numeroDeMatricula;
+
+    @Column(name = "email")
+    private String email;
 }

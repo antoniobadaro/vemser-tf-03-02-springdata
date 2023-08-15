@@ -6,6 +6,7 @@ import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.AlunoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -27,7 +30,7 @@ public class AlunoController implements AlunoControllerDoc {
     private final ObjectMapper objectMapper;
 
     @PostMapping
-    public ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException {
+    public ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoDTO alunoParaPersistir = objectMapper.convertValue(alunoCreateDTO, AlunoDTO.class);
         AlunoDTO alunoPersistido = alunoService.create(alunoParaPersistir);
 
