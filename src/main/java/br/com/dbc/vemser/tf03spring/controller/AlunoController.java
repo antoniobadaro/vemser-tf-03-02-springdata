@@ -6,6 +6,7 @@ import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.AlunoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@RestController
 @Validated
-@ControllerAdvice
+@RestController
+@AllArgsConstructor
 @RequestMapping("/aluno")
-@RequiredArgsConstructor
 public class AlunoController implements AlunoControllerDoc {
 
     private final AlunoService alunoService;
