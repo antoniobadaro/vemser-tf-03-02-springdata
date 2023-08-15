@@ -5,10 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Entity;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @ToString
+@Entity(name = "ENDERECO")
 public class EnderecoEntity {
     private Integer idEndereco;
     private String cep;

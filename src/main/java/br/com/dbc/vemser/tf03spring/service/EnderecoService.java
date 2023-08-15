@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
 
-    public EnderecoService(EnderecoRepository enderecoRepository){
+    private final ObjectMapper objectMapper;
+
+    public EnderecoService(EnderecoRepository enderecoRepository, ObjectMapper objectMapper){
+        this.objectMapper=objectMapper;
         this.enderecoRepository = enderecoRepository;
     }
 
@@ -29,12 +31,9 @@ public class EnderecoService {
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
-        List<EnderecoEntity> todosOsEnderecos = enderecoRepository.findAll();
-        List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
-        for (EnderecoEntity endereco : todosOsEnderecos) {
-            enderecoDTOS.add(retornarDTO(endereco));
-        }
-        return enderecoDTOS;
+        return enderecoRepository.findAll().stream()
+                .map(this::retornarDTO)
+                .collect(Collectors.toList());
     }
 
     public EnderecoDTO findById(Integer idEndereco) throws BancoDeDadosException {
