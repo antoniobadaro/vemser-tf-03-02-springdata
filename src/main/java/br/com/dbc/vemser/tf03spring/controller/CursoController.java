@@ -25,13 +25,17 @@ public class CursoController implements CursoControllerDoc {
     }
 
     @GetMapping
-    public List<CursoDTO> findAll() {
-        return cursoService.findAll();
+    public ResponseEntity<List<CursoDTO>> findAll() {
+        List<CursoDTO> cursosEncontrados = cursoService.findAll();
+
+        return new ResponseEntity<>(cursosEncontrados, HttpStatus.OK);
     }
 
     @GetMapping("/{idCurso}")
-    public CursoDTO findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
-        return cursoService.findById(idCurso);
+    public ResponseEntity<CursoDTO> findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
+        CursoDTO cursoEncontrado = cursoService.findById(idCurso);
+
+        return new ResponseEntity<>(cursoEncontrado, HttpStatus.OK);
     }
 
     @PostMapping
@@ -49,4 +53,5 @@ public class CursoController implements CursoControllerDoc {
         cursoService.delete(idCurso);
         return ResponseEntity.ok().build();
     }
+
 }
