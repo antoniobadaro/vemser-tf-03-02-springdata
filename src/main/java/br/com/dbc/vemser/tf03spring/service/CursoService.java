@@ -1,6 +1,4 @@
 package br.com.dbc.vemser.tf03spring.service;
-
-
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
@@ -10,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +19,15 @@ public class CursoService{
     private final CursoRepository cursoRepository;
     private final ObjectMapper objectMapper;
 
-
-
-
     public List<CursoDTO> findAll() {
-        List<CursoEntity> cursosEncontrados = cursoRepository.findAll();
-        List<CursoDTO> cursos = new ArrayList<>();
+        List<CursoEntity> listCursos = cursoRepository.findAll();
+        List<CursoDTO> cursoDTO = new ArrayList<>();
 
-        cursosEncontrados.forEach(cursoEntity -> cursos.add(returnDTO(cursoEntity)));
-
-        return cursos;
+        for (CursoEntity cursoEntity : listCursos) {
+            cursoDTO.add(returnDTO(cursoEntity));
+        }
+        return cursoDTO;
     }
-
 
     public CursoDTO create(CursoCreateDTO curso) throws Exception{
         CursoEntity cursoEntity = returnEntity(curso);
@@ -58,7 +52,6 @@ public class CursoService{
         findById(idCurso);
         cursoRepository.deleteById(idCurso);
     }
-
 
 
     public CursoDTO findById(Integer idCurso) throws RegraDeNegocioException {
