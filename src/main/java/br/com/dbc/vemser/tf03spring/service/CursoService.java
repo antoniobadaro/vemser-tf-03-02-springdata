@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,12 @@ public class CursoService{
 
 
     public List<CursoDTO> findAll() {
-        return cursoRepository.findAll().stream()
-                .map(this::returnDTO)
-                .collect(Collectors.toList());
+        List<CursoEntity> cursosEncontrados = cursoRepository.findAll();
+        List<CursoDTO> cursos = new ArrayList<>();
+
+        cursosEncontrados.forEach(cursoEntity -> cursos.add(returnDTO(cursoEntity)));
+
+        return cursos;
     }
 
 
