@@ -28,8 +28,10 @@ public class CursoController implements CursoControllerDoc {
     }
 
     @GetMapping("/{idCurso}")
-    public CursoDTO findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
-        return cursoService.findById(idCurso);
+    public ResponseEntity<CursoDTO> findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
+        CursoDTO cursoEncontrado = cursoService.findById(idCurso);
+
+        return new ResponseEntity<>(cursoEncontrado, HttpStatus.OK);
     }
 
     @PostMapping
@@ -47,4 +49,5 @@ public class CursoController implements CursoControllerDoc {
         cursoService.delete(idCurso);
         return ResponseEntity.ok().build();
     }
+
 }

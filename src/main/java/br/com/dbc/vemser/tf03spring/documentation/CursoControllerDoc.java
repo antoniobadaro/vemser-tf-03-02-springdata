@@ -15,7 +15,6 @@ import java.util.List;
 
 public interface CursoControllerDoc {
 
-
     @Operation(summary = "Lista todos os cursos", description = "Lista todos os cursos do banco de dados.")
     @ApiResponses(
             value = {
@@ -27,6 +26,7 @@ public interface CursoControllerDoc {
     @GetMapping
     public ResponseEntity<List<CursoDTO>> findAll();
 
+
     @Operation(summary = "Lista um curso pelo sei id", description = "Lista um curso específico no banco de dados.")
     @ApiResponses(
             value = {
@@ -36,7 +36,7 @@ public interface CursoControllerDoc {
             }
     )
     @GetMapping("/{idCurso}")
-    CursoDTO findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException;
+    ResponseEntity<CursoDTO> findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException;
 
 
     @Operation(summary = "Cria um curso", description = "Cria um curso a partir de um body JSON ")
