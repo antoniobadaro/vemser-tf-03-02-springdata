@@ -3,17 +3,24 @@ package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
-import br.com.dbc.vemser.tf03spring.model.Aluno;
+import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.repository.AlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@Data
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
@@ -25,51 +32,60 @@ public class AlunoService {
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
     private static String ALUNO_DELETADO_TEMPLATE = "";
 
-    public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException {
-        Aluno alunoParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
-        Aluno alunoPersistido = alunoRepository.save(alunoParaPersistir);
+    public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
+        AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
 
-        if (alunoPersistido == null) {
+        if (alunoEntityPersistido == null) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);
         }
 
-        return converterAlunoParaAlunoDto(alunoPersistido);
+        Map<String, String> dados = new HashMap<>();
+        dados.put("nome", alunoDTO.getNome());
+        String text = "Bem vindo a DBCURSOS TECH!<br>" +
+                "           Seu cadastro foi realizado com sucesso.<br>";
+        dados.put("text", text);
+        dados.put("email", alunoDTO.getEmail());
+        emailService.sendTemplateEmail(dados);
+
+        return converterAlunoParaAlunoDto(alunoEntityPersistido);
     }
 
     public List<AlunoDTO> findAll() throws RegraDeNegocioException {
-        List<Aluno> alunosEncontrados = alunoRepository.findAll();
+        List<AlunoEntity> alunosEncontrados = alunoRepository.findAll();
         List<AlunoDTO> dtos = new ArrayList<>();
 
         if (alunosEncontrados.isEmpty()) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);
         }
 
-        for (Aluno aluno : alunosEncontrados) {
-            dtos.add(converterAlunoParaAlunoDto(aluno));
+        for (AlunoEntity alunoEntity : alunosEncontrados) {
+            dtos.add(converterAlunoParaAlunoDto(alunoEntity));
         }
 
         return dtos;
     }
 
     public AlunoDTO findById(Integer idAluno) throws RegraDeNegocioException {
-        Aluno alunoEncontrado = alunoRepository
+        AlunoEntity alunoEntityEncontrado = alunoRepository
                 .findById(idAluno)
                 .orElseThrow(() -> new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO));
 
-        return converterAlunoParaAlunoDto(alunoEncontrado);
+        return converterAlunoParaAlunoDto(alunoEntityEncontrado);
     }
 
     public AlunoDTO update(Integer idAluno, AlunoDTO alunoDTO) throws RegraDeNegocioException {
-        Aluno alunoParaAtualizar = alunoRepository.findById(idAluno)
+        AlunoEntity alunoEntityParaAtualizar = alunoRepository.findById(idAluno)
                 .orElseThrow(() -> new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO));
 
-        alunoParaAtualizar.setNome(alunoDTO.getNome());
-        alunoParaAtualizar.setIdade(alunoDTO.getIdade());
-        alunoParaAtualizar.setCpf(alunoDTO.getCpf());
-        alunoParaAtualizar.setNumeroDeMatricula(alunoDTO.getNumeroDeMatricula());
+        alunoEntityParaAtualizar.setNome(alunoDTO.getNome());
+        alunoEntityParaAtualizar.setIdade(alunoDTO.getIdade());
+        alunoEntityParaAtualizar.setCpf(alunoDTO.getCpf());
+        alunoEntityParaAtualizar.setEmail(alunoDTO.getEmail());
+        alunoEntityParaAtualizar.setNumeroDeMatricula(alunoDTO.getNumeroDeMatricula());
 
-        Aluno alunoAtualizado = alunoRepository.save(alunoParaAtualizar);
-        return converterAlunoParaAlunoDto(alunoAtualizado);
+        AlunoEntity alunoEntityAtualizado = alunoRepository.save(alunoEntityParaAtualizar);
+        return converterAlunoParaAlunoDto(alunoEntityAtualizado);
     }
 
     public void delete(Integer idAluno) throws RegraDeNegocioException {
@@ -80,24 +96,24 @@ public class AlunoService {
         alunoRepository.deleteById(idAluno);
     }
 
-    private Aluno converterAlunoDtoParaAluno(AlunoDTO alunoDTO) {
-        return objectMapper.convertValue(alunoDTO, Aluno.class);
+    private AlunoEntity converterAlunoDtoParaAluno(AlunoDTO alunoDTO) {
+        return objectMapper.convertValue(alunoDTO, AlunoEntity.class);
     }
 
-    private Aluno converterAlunoCreateDtoParaAluno(AlunoCreateDTO alunoCreateDTO) {
-        return objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+    private AlunoEntity converterAlunoCreateDtoParaAluno(AlunoCreateDTO alunoCreateDTO) {
+        return objectMapper.convertValue(alunoCreateDTO, AlunoEntity.class);
     }
 
-    private AlunoDTO converterAlunoParaAlunoDto(Aluno aluno) {
-        return objectMapper.convertValue(aluno, AlunoDTO.class);
+    private AlunoDTO converterAlunoParaAlunoDto(AlunoEntity alunoEntity) {
+        return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
     }
 
     private AlunoDTO converterAlunoCreateDtoParaAlunoDto(AlunoCreateDTO alunoCreateDTO) {
         return objectMapper.convertValue(alunoCreateDTO, AlunoDTO.class);
     }
 
-    private AlunoCreateDTO converterAlunoParaAlunoCreateDto(Aluno aluno) {
-        return objectMapper.convertValue(aluno, AlunoCreateDTO.class);
+    private AlunoCreateDTO converterAlunoParaAlunoCreateDto(AlunoEntity alunoEntity) {
+        return objectMapper.convertValue(alunoEntity, AlunoCreateDTO.class);
     }
 
     private AlunoCreateDTO converterAlunoDtoParaAlunoCreateDto(AlunoDTO alunoDTO) {
