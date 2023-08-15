@@ -3,7 +3,9 @@ package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.EnderecoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,8 @@ public class EnderecoService {
 
     public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
         EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
-        return retornarDTO(enderecoCriado);
+        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
+        return retornarDTO(enderecoEnviar);
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
@@ -42,8 +45,9 @@ public class EnderecoService {
         return retornarDTO(enderecoEncontrado);
     }
 
-    public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws BancoDeDadosException {
-        EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco).get();
+    public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws RegraDeNegocioException {
+        EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco)
+                .orElseThrow(() -> new RegraDeNegocioException("Endereco não encontrado"));
 
         enderecoAtualizado.setLogradouro(enderecoDTO.getLogradouro());
         enderecoAtualizado.setEstado(enderecoDTO.getEstado());
@@ -53,7 +57,8 @@ public class EnderecoService {
         enderecoAtualizado.setBairro(enderecoDTO.getBairro());
         enderecoAtualizado.setNumero(enderecoDTO.getNumero());
 
-        return retornarDTO(enderecoAtualizado);
+        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoAtualizado);
+        return retornarDTO(enderecoEnviar);
     }
 
     public void delete(Integer idEndereco) throws BancoDeDadosException {

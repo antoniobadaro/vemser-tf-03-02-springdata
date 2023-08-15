@@ -5,6 +5,7 @@ import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -68,9 +69,8 @@ public interface EnderecoControllerDoc {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-
-    @GetMapping
-    public ResponseEntity<EnderecoDTO> update(@PathVariable("idEndereco") @Positive Integer idEndereco, @RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException;
+    @PutMapping("/{idEndereco}")
+    public ResponseEntity<EnderecoDTO> update(@PathVariable("idEndereco") @Positive Integer idEndereco, @RequestBody @Valid EnderecoDTO enderecoDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Deleta um endereco", description = "Deleta um endereco do banco de dados" +
             " Para isso, o ID do recurso a ser deletado deverá ser informado na URL da requisição" +
