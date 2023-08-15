@@ -1,8 +1,7 @@
 package br.com.dbc.vemser.tf03spring.model;
 
-import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
-import lombok.*;
 
+import lombok.*;
 import javax.persistence.*;
 
 @NoArgsConstructor

@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-
 import javax.persistence.*;
-import java.util.Set;
+
 
 
 @NoArgsConstructor
@@ -44,6 +42,4 @@ public class EnderecoEntity {
     @Column(name = "estado")
     private String estado;
 
-//    @Column(name = "aluno")
-//    private Set<Object> proprietario;
 }
