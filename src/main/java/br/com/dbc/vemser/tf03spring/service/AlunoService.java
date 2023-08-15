@@ -6,12 +6,17 @@ import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.repository.AlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -27,13 +32,21 @@ public class AlunoService {
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
     private static String ALUNO_DELETADO_TEMPLATE = "";
 
-    public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException {
+    public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
         AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
 
         if (alunoEntityPersistido == null) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);
         }
+
+        Map<String, String> dados = new HashMap<>();
+        dados.put("nome", alunoDTO.getNome());
+        String text = "Bem vindo a DBCURSOS TECH!<br>" +
+                "           Seu cadastro foi realizado com sucesso.<br>";
+        dados.put("text", text);
+        dados.put("email", alunoDTO.getEmail());
+        emailService.sendTemplateEmail(dados);
 
         return converterAlunoParaAlunoDto(alunoEntityPersistido);
     }
@@ -68,6 +81,7 @@ public class AlunoService {
         alunoEntityParaAtualizar.setNome(alunoDTO.getNome());
         alunoEntityParaAtualizar.setIdade(alunoDTO.getIdade());
         alunoEntityParaAtualizar.setCpf(alunoDTO.getCpf());
+        alunoEntityParaAtualizar.setEmail(alunoDTO.getEmail());
         alunoEntityParaAtualizar.setNumeroDeMatricula(alunoDTO.getNumeroDeMatricula());
 
         AlunoEntity alunoEntityAtualizado = alunoRepository.save(alunoEntityParaAtualizar);

@@ -28,12 +28,13 @@ backgrily: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; paddin
 
                         <div style="font-size: 32px; color:black;">
                             <br>
-                            <b>Olá</b>
+                            <b>Olá ${nome}</b>
                         </div>
 
                         <div style="font-size: 24px; color: black;">
                             <br>
-                            <b>Seu cadastro foi retirado do sistema</b>
+                            <b>${text}</b>
+                            <p>Qualquer dúvida fale com nosso suporte! ${suporte}</p>
 
                         </div>
                                 <br>
