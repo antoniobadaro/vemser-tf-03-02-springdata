@@ -43,9 +43,7 @@ public class EnderecoEntity {
     @Column(name = "ESTADO")
     private String estado;
 
-
     @Column(name = "ID_ALUNO")
     private Integer idAluno;
-
 
 }

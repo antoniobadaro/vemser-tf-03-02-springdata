@@ -4,6 +4,7 @@ package br.com.dbc.vemser.tf03spring.controller;
 import br.com.dbc.vemser.tf03spring.documentation.CursoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
+import br.com.dbc.vemser.tf03spring.dto.RelatorioCursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.CursoService;
@@ -24,6 +25,10 @@ public class CursoController implements CursoControllerDoc {
     @GetMapping
     public ResponseEntity<List<CursoDTO>> findAll() {
         return new ResponseEntity<>(cursoService.findAll(), HttpStatus.OK);
+    }
+    @GetMapping("/criarrelatoriocurso")
+    public ResponseEntity<List<RelatorioCursoDTO>> createRelatorioCursoDTO(){
+        return new ResponseEntity<>(cursoService.createRelatorioCursoDTO(), HttpStatus.OK);
     }
     @GetMapping("/{idCurso}")
     public ResponseEntity<CursoDTO> findById(@PathVariable("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {

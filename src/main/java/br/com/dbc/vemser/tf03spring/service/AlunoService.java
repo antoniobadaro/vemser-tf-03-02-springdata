@@ -2,10 +2,8 @@ package br.com.dbc.vemser.tf03spring.service;
 
 import br.com.dbc.vemser.tf03spring.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
-import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
-import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.AlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
@@ -37,9 +35,11 @@ public class AlunoService {
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
     private static String ALUNO_DELETADO_TEMPLATE = "";
 
+
     public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
         AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
+
         if (alunoEntityPersistido == null) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);
         }
