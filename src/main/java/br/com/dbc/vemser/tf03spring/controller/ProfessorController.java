@@ -2,6 +2,7 @@ package br.com.dbc.vemser.tf03spring.controller;
 
 
 import br.com.dbc.vemser.tf03spring.documentation.ProfessorControllerDoc;
+import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
@@ -9,11 +10,14 @@ import br.com.dbc.vemser.tf03spring.service.ProfessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -31,6 +35,15 @@ public class ProfessorController implements ProfessorControllerDoc {
     public ResponseEntity<List<ProfessorDTO>> findAll() {
         log.info("Professor: listar todos");
         return new ResponseEntity<>(professorService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/professores-paginados")
+    public Page<ProfessorDTO> findAllPaginados(Integer numeroDePaginas, Integer quantidadeDeRegistros) {
+        Sort ordenacao = Sort.by("nome");
+
+        Pageable pageable = PageRequest.of(numeroDePaginas, quantidadeDeRegistros, ordenacao);
+
+        return professorService.findAll(pageable);
     }
 
     @GetMapping("/{idProfessor}")

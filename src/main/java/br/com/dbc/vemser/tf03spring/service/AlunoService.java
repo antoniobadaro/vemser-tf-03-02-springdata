@@ -9,28 +9,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+
 
 @Service
 @AllArgsConstructor
 @Data
 public class AlunoService {
-
     private final AlunoRepository alunoRepository;
     private final EmailService emailService;
     private final ObjectMapper objectMapper;
-
     private static String MENSAGEM_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
     private static String ALUNO_CRIADO_TEMPLATE = "";
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
     private static String ALUNO_DELETADO_TEMPLATE = "";
+
 
     public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
@@ -64,6 +68,17 @@ public class AlunoService {
         }
 
         return dtos;
+    }
+
+    public Page<AlunoDTO> findAll(Pageable pageable) {
+        Page<AlunoEntity> alunoEntityPage = alunoRepository.findAll(pageable);
+        List<AlunoDTO> alunosEncontrados = alunoRepository
+                .findAll(pageable)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+
+        return new PageImpl<>(alunosEncontrados, pageable, alunoEntityPage.getTotalElements());
     }
 
     public AlunoDTO findById(Integer idAluno) throws RegraDeNegocioException {
@@ -118,6 +133,17 @@ public class AlunoService {
 
     private AlunoCreateDTO converterAlunoDtoParaAlunoCreateDto(AlunoDTO alunoDTO) {
         return objectMapper.convertValue(alunoDTO, AlunoCreateDTO.class);
+    }
+
+    private AlunoDTO convertToDTO(AlunoEntity alunoEntity) {
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setIdAluno(alunoEntity.getIdAluno());
+        alunoDTO.setNome(alunoEntity.getNome());
+        alunoDTO.setIdade(alunoEntity.getIdade());
+        alunoDTO.setCpf(alunoEntity.getCpf());
+        alunoDTO.setEmail(alunoEntity.getEmail());
+        alunoDTO.setNumeroDeMatricula(alunoEntity.getNumeroDeMatricula());
+        return alunoDTO;
     }
 
 }

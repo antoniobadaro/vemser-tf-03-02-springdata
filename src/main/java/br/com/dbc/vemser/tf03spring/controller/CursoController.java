@@ -1,9 +1,10 @@
 package br.com.dbc.vemser.tf03spring.controller;
 
+
 import br.com.dbc.vemser.tf03spring.documentation.CursoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
-import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
+import br.com.dbc.vemser.tf03spring.dto.RelatorioCursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.service.CursoService;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -26,9 +26,12 @@ public class CursoController implements CursoControllerDoc {
     public ResponseEntity<List<CursoDTO>> findAll() {
         return new ResponseEntity<>(cursoService.findAll(), HttpStatus.OK);
     }
-
+    @GetMapping("/criarrelatoriocurso")
+    public ResponseEntity<List<RelatorioCursoDTO>> createRelatorioCursoDTO(){
+        return new ResponseEntity<>(cursoService.createRelatorioCursoDTO(), HttpStatus.OK);
+    }
     @GetMapping("/{idCurso}")
-    public ResponseEntity<CursoDTO> findById(@PathVariable ("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
+    public ResponseEntity<CursoDTO> findById(@PathVariable("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
         CursoDTO cursoEncontrado = cursoService.findById(idCurso);
 
         return new ResponseEntity<>(cursoEncontrado, HttpStatus.OK);

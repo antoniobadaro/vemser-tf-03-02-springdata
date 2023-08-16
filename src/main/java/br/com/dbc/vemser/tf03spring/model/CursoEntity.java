@@ -1,14 +1,14 @@
 package br.com.dbc.vemser.tf03spring.model;
 
 import br.com.dbc.vemser.tf03spring.model.enums.TipoPeriodo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity(name = "CURSO")
 public class CursoEntity {
@@ -28,5 +28,8 @@ public class CursoEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "PERIODO")
     private TipoPeriodo periodo;
-}
 
+    @Column(name = "ID_PROFESSOR")
+    private Integer idProfessor;
+
+}

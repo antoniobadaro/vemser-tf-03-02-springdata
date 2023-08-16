@@ -1,36 +1,32 @@
 package br.com.dbc.vemser.tf03spring.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity(name = "PROFESSOR")
 public class ProfessorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROFESSOR_SEQ")
     @SequenceGenerator(name = "PROFESSOR_SEQ", sequenceName = "SEQ_PROFESSOR", allocationSize = 1)
-    @Column(name = "id_professor")
+    @Column(name = "ID_PROFESSOR")
     private Integer idProfessor;
 
-    @Column(name = "nome")
+    @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "cpf")
+    @Column(name = "CPF")
     private String cpf;
 
-    @Column(name = "especialidade")
+    @Column(name = "ESPECIALIDADE")
     private String especialidade;
 
-    @Column(name = "salario")
-    private double salario;
 
+    @Column(name = "SALARIO")
+    private Double salario;
 
 }
