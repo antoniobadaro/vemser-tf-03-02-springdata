@@ -2,8 +2,10 @@ package br.com.dbc.vemser.tf03spring.service;
 
 import br.com.dbc.vemser.tf03spring.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
+import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
+import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.AlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
@@ -12,27 +14,29 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 @Data
 public class AlunoService {
-
+    private final CursoService cursoService;
     private final AlunoRepository alunoRepository;
     private final EmailService emailService;
     private final ObjectMapper objectMapper;
     private static String MENSAGEM_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
+    private static String MENSAGEM_CURSO_NAO_ENCONTRADO = "Curso não encontrado";
     private static String ALUNO_CRIADO_TEMPLATE = "";
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
     private static String ALUNO_DELETADO_TEMPLATE = "";
 
-    public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public AlunoDTO create(AlunoDTO alunoDTO, Integer idCurso) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
         AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
+        alunoEntityPersistido.getCursos().add(objectMapper.convertValue(cursoService.findById(idCurso), CursoEntity.class));
+        if (cursoService.findById(idCurso) == null){
+            throw new RegraDeNegocioException(MENSAGEM_CURSO_NAO_ENCONTRADO);
+        }
 
         if (alunoEntityPersistido == null) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);

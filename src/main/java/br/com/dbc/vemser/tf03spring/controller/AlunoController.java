@@ -27,10 +27,10 @@ public class AlunoController implements AlunoControllerDoc {
     private final AlunoService alunoService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping
-    public ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    @PostMapping("/{idCurso}")
+    public ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO, @Positive @PathVariable Integer idCurso) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoDTO alunoParaPersistir = objectMapper.convertValue(alunoCreateDTO, AlunoDTO.class);
-        AlunoDTO alunoPersistido = alunoService.create(alunoParaPersistir);
+        AlunoDTO alunoPersistido = alunoService.create(alunoParaPersistir, idCurso);
 
         if (alunoPersistido == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
