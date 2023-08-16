@@ -75,13 +75,6 @@ public class EnderecoController implements EnderecoControllerDoc {
     @DeleteMapping("/{idEndereco}")
     public ResponseEntity<Void> delete(@PathVariable("idEndereco") @Positive Integer idEndereco) throws BancoDeDadosException {
         enderecoService.delete(idEndereco);
-
-        EnderecoDTO enderecoParaDeletar = enderecoService.findById(idEndereco);
-
-        if (ObjectUtils.isEmpty(enderecoParaDeletar)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
