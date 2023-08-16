@@ -33,15 +33,4 @@ public class AlunoEntity {
 
     @Column(name = "email")
     private String email;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "Aluno_X_Curso",
-            joinColumns = @JoinColumn (name = "id_aluno"),
-            inverseJoinColumns = @JoinColumn (name = "idcurso")
-    )
-    private Set<CursoEntity> cursos;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL)
-    private EnderecoEntity endereco;
 }

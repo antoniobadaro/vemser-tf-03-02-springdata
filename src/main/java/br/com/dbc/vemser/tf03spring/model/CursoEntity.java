@@ -30,14 +30,6 @@ public class CursoEntity {
     @Column(name = "PERIODO")
     private TipoPeriodo periodo;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "cursos")
-    private Set<AlunoEntity> alunos;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_professor", referencedColumnName = "id_professor")
-    private ProfessorEntity professor;
-
+    private Integer idProfessor;
 }
 

@@ -25,7 +25,6 @@ public class CursoController implements CursoControllerDoc {
     public ResponseEntity<List<CursoDTO>> findAll() {
         return new ResponseEntity<>(cursoService.findAll(), HttpStatus.OK);
     }
-
     @GetMapping("/{idCurso}")
     public ResponseEntity<CursoDTO> findById(@PathVariable("idCurso") Integer idCurso) throws BancoDeDadosException, RegraDeNegocioException {
         CursoDTO cursoEncontrado = cursoService.findById(idCurso);
