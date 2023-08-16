@@ -26,4 +26,6 @@ public class CursoCreateDTO {
     @Schema(description = "Período do curso", required = true, example = "MANHA")
     private TipoPeriodo periodo;
 
+    private Integer idProfessor;
+
 }

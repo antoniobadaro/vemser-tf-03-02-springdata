@@ -1,15 +1,10 @@
 package br.com.dbc.vemser.tf03spring.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "PROFESSOR")
@@ -32,14 +27,5 @@ public class ProfessorEntity {
 
     @Column(name = "salario")
     private double salario;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "professor", cascade = CascadeType.ALL)
-    private EnderecoEntity endereco;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CursoEntity> cursos;
-
 
 }

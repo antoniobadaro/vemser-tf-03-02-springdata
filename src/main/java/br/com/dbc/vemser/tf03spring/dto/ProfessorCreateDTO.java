@@ -30,5 +30,4 @@ public class ProfessorCreateDTO {
     @Schema(description = "Salário do professor", required = true, example = "5500")
     private Double salario;
 
-
 }
