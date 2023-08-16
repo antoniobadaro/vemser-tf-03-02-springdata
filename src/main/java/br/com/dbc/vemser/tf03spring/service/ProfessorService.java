@@ -5,12 +5,15 @@ import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
-import br.com.dbc.vemser.tf03spring.model.CursoEntity;
+import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.ProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,17 @@ public class ProfessorService {
             professoresDTO.add(retornarDTO(professorEntity));
         }
         return professoresDTO;
+    }
+
+    public Page<ProfessorDTO> findAll(Pageable pageable) {
+        Page<ProfessorEntity> professorEntityPage = professorRepository.findAll(pageable);
+        List<ProfessorDTO> professoresEncontrados = professorRepository
+                .findAll(pageable)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+
+        return new PageImpl<>(professoresEncontrados, pageable, professorEntityPage.getTotalElements());
     }
 
     public ProfessorDTO findById(Integer idProfessor) throws RegraDeNegocioException {
@@ -69,4 +83,15 @@ public class ProfessorService {
     public ProfessorDTO retornarDTO(ProfessorEntity professorEntity){
         return objectMapper.convertValue(professorEntity, ProfessorDTO.class);
     }
+
+    private ProfessorDTO convertToDTO(ProfessorEntity professorEntity) {
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setIdProfessor(professorEntity.getIdProfessor());
+        professorDTO.setNome(professorEntity.getNome());
+        professorDTO.setCpf(professorEntity.getCpf());
+        professorDTO.setSalario(professorEntity.getSalario());
+        professorDTO.setEspecialidade(professorEntity.getEspecialidade());
+        return professorDTO;
+    }
+
 }
