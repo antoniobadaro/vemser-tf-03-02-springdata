@@ -27,7 +27,7 @@ public class AlunoController implements AlunoControllerDoc {
     private final AlunoService alunoService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/{idCurso}")
+    @PostMapping
     public ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoDTO alunoParaPersistir = objectMapper.convertValue(alunoCreateDTO, AlunoDTO.class);
         AlunoDTO alunoPersistido = alunoService.create(alunoParaPersistir);
