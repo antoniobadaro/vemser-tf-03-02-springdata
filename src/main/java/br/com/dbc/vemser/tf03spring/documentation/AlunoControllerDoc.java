@@ -2,7 +2,6 @@ package br.com.dbc.vemser.tf03spring.documentation;
 
 import br.com.dbc.vemser.tf03spring.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
-import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

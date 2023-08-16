@@ -1,49 +1,54 @@
 package br.com.dbc.vemser.tf03spring.service;
-
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
-import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Data
 public class CursoService{
 
+    private final ProfessorService professorService;
     private final CursoRepository cursoRepository;
     private final ObjectMapper objectMapper;
 
-
-
-
     public List<CursoDTO> findAll() {
-        List<CursoEntity> cursosEncontrados = cursoRepository.findAll();
-        List<CursoDTO> cursos = new ArrayList<>();
+        List<CursoEntity> listCursos = cursoRepository.findAll();
+        List<CursoDTO> cursoDTO = new ArrayList<>();
 
-        cursosEncontrados.forEach(cursoEntity -> cursos.add(returnDTO(cursoEntity)));
-
-        return cursos;
+        for (CursoEntity cursoEntity : listCursos) {
+            cursoDTO.add(returnDTO(cursoEntity));
+        }
+        return cursoDTO;
     }
 
-
     public CursoDTO create(CursoCreateDTO curso) throws Exception{
-        CursoEntity cursoEntity = returnEntity(curso);
-        return returnDTO(cursoRepository.save(cursoEntity));
+        ProfessorDTO professorId = professorService.findById(curso.getIdProfessor());
+        ProfessorEntity professorEntity = objectMapper.convertValue(professorId, ProfessorEntity.class);
+
+        if(professorEntity != null){
+            CursoEntity cursoCriado = returnEntity(curso);
+            CursoEntity cursoEnviar = cursoRepository.save(cursoCriado);
+            return returnDTO(cursoEnviar);
+        }
+        return null;
     }
 
     public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {
 
+
         CursoEntity cursoAtualizado = returnEntity(findById(idCurso));
+
 
         cursoAtualizado.setNome(curso.getNome());
         cursoAtualizado.setPeriodo(curso.getPeriodo());
@@ -57,7 +62,6 @@ public class CursoService{
         findById(idCurso);
         cursoRepository.deleteById(idCurso);
     }
-
 
 
     public CursoDTO findById(Integer idCurso) throws RegraDeNegocioException {

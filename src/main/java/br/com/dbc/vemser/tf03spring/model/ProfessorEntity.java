@@ -1,9 +1,6 @@
 package br.com.dbc.vemser.tf03spring.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -27,6 +24,7 @@ public class ProfessorEntity {
 
     @Column(name = "ESPECIALIDADE")
     private String especialidade;
+
 
     @Column(name = "SALARIO")
     private Double salario;

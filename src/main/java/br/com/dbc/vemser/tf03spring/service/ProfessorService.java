@@ -1,7 +1,9 @@
 package br.com.dbc.vemser.tf03spring.service;
 
 
-import br.com.dbc.vemser.tf03spring.dto.*;
+import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorCreateDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
@@ -13,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class ProfessorService {
-
     private final ProfessorRepository professorRepository;
     private final ObjectMapper objectMapper;
 
-    public ProfessorDTO create(ProfessorCreateDTO professorDTO) {
-        ProfessorEntity professorCriado = retornarEntity(professorDTO);
-        ProfessorEntity professorEnviar = professorRepository.save(professorCriado);
-        return retornarDTO(professorEnviar);
+    public ProfessorDTO create(ProfessorCreateDTO professorDTO){
+            ProfessorEntity professorCriado = retornarEntity(professorDTO);
+            ProfessorEntity professorEnviar = professorRepository.save(professorCriado);
+            return retornarDTO(professorEnviar);
     }
 
     public List<ProfessorDTO> findAll() {

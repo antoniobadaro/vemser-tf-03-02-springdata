@@ -2,8 +2,10 @@ package br.com.dbc.vemser.tf03spring.service;
 
 import br.com.dbc.vemser.tf03spring.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
+import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
+import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.repository.AlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
@@ -13,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,15 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+
 @Service
 @AllArgsConstructor
 @Data
 public class AlunoService {
-
     private final AlunoRepository alunoRepository;
     private final EmailService emailService;
     private final ObjectMapper objectMapper;
-
     private static String MENSAGEM_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
     private static String ALUNO_CRIADO_TEMPLATE = "";
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";
@@ -39,7 +40,6 @@ public class AlunoService {
     public AlunoDTO create(AlunoDTO alunoDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
         AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
-
         if (alunoEntityPersistido == null) {
             throw new RegraDeNegocioException(MENSAGEM_ALUNO_NAO_ENCONTRADO);
         }

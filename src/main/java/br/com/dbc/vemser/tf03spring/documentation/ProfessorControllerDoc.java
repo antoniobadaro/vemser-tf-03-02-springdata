@@ -49,7 +49,7 @@ public interface ProfessorControllerDoc {
             }
     )
     @PostMapping
-    public ResponseEntity<ProfessorDTO> create(@RequestBody @Valid ProfessorCreateDTO professorCreateDTO);
+    public ResponseEntity<ProfessorDTO> create(@RequestBody @Valid ProfessorCreateDTO professorCreateDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Atualiza um professor", description = "Atualiza um professor e o persiste no banco de dados." +
             " Para isso, o ID do recurso a ser atualizado deverá ser informado na URL da requisição, e as" +

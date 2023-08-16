@@ -4,7 +4,6 @@ package br.com.dbc.vemser.tf03spring.controller;
 import br.com.dbc.vemser.tf03spring.documentation.EnderecoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
-import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
@@ -16,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -37,7 +34,7 @@ public class EnderecoController implements EnderecoControllerDoc {
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
+    public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
         EnderecoEntity enderecoCriado = retornarEntidade(enderecoService.create(enderecoCreateDTO));
 
         if (ObjectUtils.isEmpty(enderecoCriado)) {

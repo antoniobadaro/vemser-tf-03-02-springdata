@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.validation.constraints.NotNull;
 
 
@@ -30,6 +29,5 @@ public class ProfessorCreateDTO {
     @NotNull(message = "O campo salario não pode ser nulo")
     @Schema(description = "Salário do professor", required = true, example = "5500")
     private Double salario;
-
 
 }

@@ -1,43 +1,48 @@
 package br.com.dbc.vemser.tf03spring.service;
 
+import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
+import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.EnderecoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final AlunoService alunoService;
+    private final ObjectMapper objectMapper;
 
-    public EnderecoService(EnderecoRepository enderecoRepository){
+    public EnderecoService(EnderecoRepository enderecoRepository, AlunoService alunoService, ObjectMapper objectMapper){
+        this.alunoService = alunoService;
+        this.objectMapper=objectMapper;
         this.enderecoRepository = enderecoRepository;
     }
 
-    public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
-        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
-        return retornarDTO(enderecoEnviar);
+    public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
+        AlunoDTO alunoId = alunoService.findById(enderecoCreateDTO.getIdAluno());
+        AlunoEntity alunoEntity = objectMapper.convertValue(alunoId, AlunoEntity.class);
+
+        if(alunoEntity != null) {
+            EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
+            EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
+            return retornarDTO(enderecoEnviar);
+        }
+        return null;
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
-        List<EnderecoEntity> todosOsEnderecos = enderecoRepository.findAll();
-        List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
-        for (EnderecoEntity endereco : todosOsEnderecos) {
-            enderecoDTOS.add(retornarDTO(endereco));
-        }
-        return enderecoDTOS;
+        return enderecoRepository.findAll().stream()
+                .map(this::retornarDTO)
+                .collect(Collectors.toList());
     }
 
     public EnderecoDTO findById(Integer idEndereco) throws BancoDeDadosException {
@@ -45,9 +50,11 @@ public class EnderecoService {
         return retornarDTO(enderecoEncontrado);
     }
 
+
     public EnderecoDTO update(Integer idEndereco, EnderecoDTO enderecoDTO) throws RegraDeNegocioException {
         EnderecoEntity enderecoAtualizado = enderecoRepository.findById(idEndereco)
                 .orElseThrow(() -> new RegraDeNegocioException("Endereco não encontrado"));
+
 
         enderecoAtualizado.setLogradouro(enderecoDTO.getLogradouro());
         enderecoAtualizado.setEstado(enderecoDTO.getEstado());

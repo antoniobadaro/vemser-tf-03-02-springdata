@@ -1,10 +1,12 @@
 package br.com.dbc.vemser.tf03spring.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 

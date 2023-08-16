@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,7 +23,8 @@ public interface CursoControllerDoc {
             }
     )
     @GetMapping
-    ResponseEntity<List<CursoDTO>> findAll() throws BancoDeDadosException;
+    public ResponseEntity<List<CursoDTO>> findAll();
+
 
     @Operation(summary = "Lista um curso pelo sei id", description = "Lista um curso específico no banco de dados.")
     @ApiResponses(
