@@ -1,10 +1,13 @@
 package br.com.dbc.vemser.tf03spring.service;
 
+import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
+import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.EnderecoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,25 @@ import java.util.stream.Collectors;
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
-
+    private final AlunoService alunoService;
     private final ObjectMapper objectMapper;
 
-    public EnderecoService(EnderecoRepository enderecoRepository, ObjectMapper objectMapper){
+    public EnderecoService(EnderecoRepository enderecoRepository, AlunoService alunoService, ObjectMapper objectMapper){
+        this.alunoService = alunoService;
         this.objectMapper=objectMapper;
         this.enderecoRepository = enderecoRepository;
     }
 
-    public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
-        EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
-        EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
-        return retornarDTO(enderecoEnviar);
+    public EnderecoDTO create(EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
+        AlunoDTO alunoId = alunoService.findById(enderecoCreateDTO.getIdAluno());
+        AlunoEntity alunoEntity = objectMapper.convertValue(alunoId, AlunoEntity.class);
+
+        if(alunoEntity != null) {
+            EnderecoEntity enderecoCriado = retornarEntidade(enderecoCreateDTO);
+            EnderecoEntity enderecoEnviar = enderecoRepository.save(enderecoCriado);
+            return retornarDTO(enderecoEnviar);
+        }
+        return null;
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {
