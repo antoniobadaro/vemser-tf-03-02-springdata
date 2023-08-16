@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.Set;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity(name = "CURSO")
 public class CursoEntity {
@@ -30,6 +29,7 @@ public class CursoEntity {
     @Column(name = "PERIODO")
     private TipoPeriodo periodo;
 
+    @Column(name = "ID_PROFESSOR")
     private Integer idProfessor;
-}
 
+}
