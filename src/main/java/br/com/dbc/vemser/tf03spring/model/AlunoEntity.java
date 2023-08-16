@@ -17,33 +17,22 @@ public class AlunoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ALUNO_SEQ")
     @SequenceGenerator(name = "ALUNO_SEQ", sequenceName = "SEQ_ALUNO", allocationSize = 1)
-    @Column(name = "id_aluno")
+    @Column(name = "ID_ALUNO")
     private Integer idAluno;
 
-    @Column(name = "nome")
+    @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "idade")
+    @Column(name = "IDADE")
     private String idade;
 
-    @Column(name = "cpf")
+    @Column(name = "CPF")
     private String cpf;
 
-    @Column(name = "numero")
+    @Column(name = "NUMERO")
     private String numeroDeMatricula;
 
-    @Column(name = "email")
+    @Column(name = "EMAIL")
     private String email;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "Aluno_x_Aluno_Curso",
-            joinColumns = @JoinColumn(name = "id_aluno"),
-            inverseJoinColumns = @JoinColumn(name = "idcurso"))
-    private Set<CursoEntity> cursos;
-
-    @OneToOne
-    @JoinColumn(name = "id_aluno")
-    private EnderecoEntity endereco;
 
 }

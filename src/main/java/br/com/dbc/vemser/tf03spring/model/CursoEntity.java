@@ -27,10 +27,11 @@ public class CursoEntity {
     @Column(name = "CARGAHORARIA")
     private Integer cargaHoraria;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "PERIODO")
     private TipoPeriodo periodo;
 
-    @OneToOne
-    private Set<AlunoEntity> aluno;
+    @Column(name = "ID_PROFESSOR")
+    private Integer idProfessor;
 
 }

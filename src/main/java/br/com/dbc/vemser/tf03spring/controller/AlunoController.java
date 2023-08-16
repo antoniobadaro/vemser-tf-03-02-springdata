@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +54,15 @@ public class AlunoController implements AlunoControllerDoc {
         }
 
         return new ResponseEntity<>(alunosEncontrados, HttpStatus.OK);
+    }
+
+    @GetMapping("/alunos-paginados")
+    public Page<AlunoDTO> findAllPaginados(Integer numeroDePaginas, Integer quantidadeDeRegistros) {
+        Sort ordenacao = Sort.by("nome");
+
+        Pageable pageable = PageRequest.of(numeroDePaginas, quantidadeDeRegistros, ordenacao);
+
+        return alunoService.findAll(pageable);
     }
 
     @GetMapping("/{idAluno}")
