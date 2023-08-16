@@ -37,4 +37,6 @@ public class EnderecoCreateDTO {
     @NotNull(message = "O campo estado não pode ser nulo")
     @Schema(description = "Estado do endereço", required = true, example = "Rio Grande do Sul")
     private String estado;
+
+    private Integer idAluno;
 }

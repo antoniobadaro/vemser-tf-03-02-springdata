@@ -34,7 +34,7 @@ public class EnderecoController implements EnderecoControllerDoc {
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException {
+    public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
         EnderecoEntity enderecoCriado = retornarEntidade(enderecoService.create(enderecoCreateDTO));
 
         if (ObjectUtils.isEmpty(enderecoCriado)) {

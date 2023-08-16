@@ -29,7 +29,7 @@ public interface EnderecoControllerDoc {
     )
 
     @PostMapping()
-    ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException;
+    ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException;
 
     @Operation(summary = "Lista todos os enderecos", description = "Lista todos os enderecos do banco de dados.")
     @ApiResponses(

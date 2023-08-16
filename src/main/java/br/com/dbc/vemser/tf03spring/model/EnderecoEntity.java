@@ -42,4 +42,6 @@ public class EnderecoEntity {
 
     @Column(name = "estado")
     private String estado;
+
+    private Integer idAluno;
 }
