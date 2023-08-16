@@ -1,8 +1,10 @@
 package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
+import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
+import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.CursoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 @Data
 public class CursoService{
 
+    private final ProfessorService professorService;
     private final CursoRepository cursoRepository;
     private final ObjectMapper objectMapper;
 
@@ -30,8 +33,15 @@ public class CursoService{
     }
 
     public CursoDTO create(CursoCreateDTO curso) throws Exception{
-        CursoEntity cursoEntity = returnEntity(curso);
-        return returnDTO(cursoRepository.save(cursoEntity));
+        ProfessorDTO professorId = professorService.findById(curso.getIdProfessor());
+        ProfessorEntity professorEntity = objectMapper.convertValue(professorId, ProfessorEntity.class);
+
+        if(professorEntity != null){
+            CursoEntity cursoCriado = returnEntity(curso);
+            CursoEntity cursoEnviar = cursoRepository.save(cursoCriado);
+            return returnDTO(cursoEnviar);
+        }
+        return null;
     }
 
     public CursoDTO update(CursoCreateDTO curso, Integer idCurso) throws Exception {

@@ -1,9 +1,11 @@
 package br.com.dbc.vemser.tf03spring.service;
 
 
+import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
+import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
 import br.com.dbc.vemser.tf03spring.repository.ProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,14 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class ProfessorService {
-
     private final ProfessorRepository professorRepository;
     private final ObjectMapper objectMapper;
 
-    public ProfessorDTO create(ProfessorCreateDTO professorDTO) {
-        ProfessorEntity professorCriado = retornarEntity(professorDTO);
-        ProfessorEntity professorEnviar = professorRepository.save(professorCriado);
-        return retornarDTO(professorEnviar);
+    public ProfessorDTO create(ProfessorCreateDTO professorDTO){
+            ProfessorEntity professorCriado = retornarEntity(professorDTO);
+            ProfessorEntity professorEnviar = professorRepository.save(professorCriado);
+            return retornarDTO(professorEnviar);
     }
 
     public List<ProfessorDTO> findAll() {

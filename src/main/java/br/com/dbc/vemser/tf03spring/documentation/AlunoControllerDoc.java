@@ -30,7 +30,7 @@ public interface AlunoControllerDoc {
             }
     )
     @PostMapping()
-    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO, @Positive @RequestParam Integer idCurso) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
+    ResponseEntity<AlunoDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Lista todos os alunos", description = "Lista todos os alunos do banco de dados.")
     @ApiResponses(
