@@ -3,6 +3,7 @@ package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.AlunoDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
+import br.com.dbc.vemser.tf03spring.dto.RelatorioDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.AlunoEntity;
@@ -37,6 +38,9 @@ public class EnderecoService {
             return retornarDTO(enderecoEnviar);
         }
         return null;
+    }
+    public List<RelatorioDTO> createRelatorioDTO(){
+        return enderecoRepository.createRelatorioDTO();
     }
 
     public List<EnderecoDTO> findAll() throws BancoDeDadosException {

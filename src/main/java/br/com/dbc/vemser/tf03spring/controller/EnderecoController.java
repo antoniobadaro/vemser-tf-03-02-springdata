@@ -4,6 +4,7 @@ package br.com.dbc.vemser.tf03spring.controller;
 import br.com.dbc.vemser.tf03spring.documentation.EnderecoControllerDoc;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.EnderecoDTO;
+import br.com.dbc.vemser.tf03spring.dto.RelatorioDTO;
 import br.com.dbc.vemser.tf03spring.exception.BancoDeDadosException;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.EnderecoEntity;
@@ -33,6 +34,11 @@ public class EnderecoController implements EnderecoControllerDoc {
         this.enderecoService = enderecoService;
     }
 
+
+    @GetMapping("/relatorioPessoa")
+    public ResponseEntity<List<RelatorioDTO>> createRelatorioDTO() {
+        return new ResponseEntity<>(enderecoService.createRelatorioDTO(), HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<EnderecoDTO> create(@RequestBody @Valid EnderecoCreateDTO enderecoCreateDTO) throws BancoDeDadosException, RegraDeNegocioException {
         EnderecoEntity enderecoCriado = retornarEntidade(enderecoService.create(enderecoCreateDTO));

@@ -2,6 +2,7 @@ package br.com.dbc.vemser.tf03spring.service;
 import br.com.dbc.vemser.tf03spring.dto.CursoCreateDTO;
 import br.com.dbc.vemser.tf03spring.dto.CursoDTO;
 import br.com.dbc.vemser.tf03spring.dto.ProfessorDTO;
+import br.com.dbc.vemser.tf03spring.dto.RelatorioCursoDTO;
 import br.com.dbc.vemser.tf03spring.exception.RegraDeNegocioException;
 import br.com.dbc.vemser.tf03spring.model.CursoEntity;
 import br.com.dbc.vemser.tf03spring.model.ProfessorEntity;
@@ -30,6 +31,10 @@ public class CursoService{
             cursoDTO.add(returnDTO(cursoEntity));
         }
         return cursoDTO;
+    }
+
+    public List<RelatorioCursoDTO> createRelatorioCursoDTO(){
+        return cursoRepository.createRelatorioCursoDTO();
     }
 
     public CursoDTO create(CursoCreateDTO curso) throws Exception{
