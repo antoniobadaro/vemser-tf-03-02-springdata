@@ -25,7 +25,6 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
     private final EmailService emailService;
     private final ObjectMapper objectMapper;
-
     private static String MENSAGEM_ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
     private static String ALUNO_CRIADO_TEMPLATE = "";
     private static String ALUNO_ATUALIZADO_TEMPLATE = "";

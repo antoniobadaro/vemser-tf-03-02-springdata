@@ -33,5 +33,11 @@ public class CursoEntity {
     @JsonIgnore
     @ManyToMany(mappedBy = "cursos")
     private Set<AlunoEntity> alunos;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_professor", referencedColumnName = "id_professor")
+    private ProfessorEntity professor;
+
 }
 

@@ -48,4 +48,9 @@ public class EnderecoEntity {
     @JoinColumn(name = "id_aluno")
     private AlunoEntity aluno;
 
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_professor")
+    private ProfessorEntity professor;
+
 }
