@@ -31,9 +31,12 @@ public class AlunoService {
     private static String ALUNO_DELETADO_TEMPLATE = "";
 
     public AlunoDTO create(AlunoDTO alunoDTO, Integer idCurso) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
-        AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
-        alunoEntityPersistido.getCursos().add(objectMapper.convertValue(cursoService.findById(idCurso), CursoEntity.class));
+//        AlunoEntity alunoEntityParaPersistir = converterAlunoDtoParaAluno(alunoDTO);
+//        AlunoEntity alunoEntityPersistido = alunoRepository.save(alunoEntityParaPersistir);
+//        alunoEntityPersistido.getCursos().add(objectMapper.convertValue(cursoService.findById(idCurso), CursoEntity.class));
+        AlunoEntity alunoEntity= new AlunoEntity();
+        alunoEntity.getCursos().add(objectMapper.convertValue(cursoService.findById(idCurso), CursoEntity.class));
+
         if (cursoService.findById(idCurso) == null){
             throw new RegraDeNegocioException(MENSAGEM_CURSO_NAO_ENCONTRADO);
         }
